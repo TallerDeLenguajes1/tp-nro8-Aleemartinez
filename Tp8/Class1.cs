@@ -45,16 +45,14 @@ namespace tp7
             }
 
       
-        public Empleado llenar(Empleado emp, int id1)
+        public Empleado Llenar(Empleado emp, int id1)
         {
-            int dia, mes, año, añoing;
+            int  año, añoing;
             string nom, ape, gen, estado, carg;
-            int diferencia;
+            
             Random numrdm = new Random();
-            DateTime fechaini ;
-            DateTime fechafin ;
-            DateTime hoy = DateTime.Today;
-            Empleado estructura = new Empleado();
+            
+            
             ape = Convert.ToString((Apellidos)numrdm.Next(10));
             estado = Convert.ToString((Estc)numrdm.Next(2));
             carg = Convert.ToString((Cargo)numrdm.Next(5));
@@ -76,59 +74,37 @@ namespace tp7
                 estado = estado.Replace("do", "da");
                 carg = carg.Replace("ro", "ra");
             }
-            //if (gen == "Masculino")
-            //{
-            //     //fechaini = new DateTime(1955, 1, 1);
-            //     //fechafin = new DateTime(1994, 12, 31);
-            //}
-            //else
-            //{
-            //     fechaini = new DateTime(1960, 1, 1);
-            //     fechafin = new DateTime(1994, 12, 31);
-            //    estado = estado.Replace("ro", "ra");
-            //    estado = estado.Replace("do", "da");
-            //    carg = carg.Replace("ro", "ra");
-            //}
-            mes = numrdm.Next(13);
-            //mesing = numrdm.Next(13);
-            
-
-            //diferencia = fechafin.Day - fechaini.Day;
-            //fechaini.AddDays(numrdm.Next(diferencia));
-            
-
-            //fechaini = new DateTime(1980, 1, 1);
-            //    fechafin = new DateTime(1994, 12, 31);
-            //    diferencia = fechafin.Day - fechaini.Day;
-            //    fechaini.AddDays(numrdm.Next(0,diferencia));
+           
+         
+           
                 emp.nombre = nom;
                 emp.apellido = ape;
                 emp.cargo = carg;
-                emp.fechadenac = fecha(año);
+                emp.fechadenac = Fecha(año);
                 emp.estadocivil = estado;
                 emp.genero = gen;
 
-                emp.fechaing = fecha(añoing);
+                emp.fechaing = Fecha(añoing);
                 emp.basico = 15000;
                 emp.id = id1;
 
             return emp;
             }
 
-            public float salario(Empleado empleado)
+            public float Salario(Empleado empleado)
             {
                 float salario;
                 float adicion;
                 int hijos = 0;
-            int antiguedad = 0;
+            int antiguedad ;
             try
             {
                  antiguedad = DateTime.Today.AddTicks(-empleado.fechaing.Ticks).Year - 1;
             }
             catch (Exception)
             {
-                 antiguedad = DateTime.Today.AddTicks(-empleado.fechaing.Ticks).Year - 2;
-                throw;
+                 antiguedad = 0;
+               
             }
                 
               
@@ -141,12 +117,12 @@ namespace tp7
 
 
 
-                adicion = adicional( empleado.basico, antiguedad,  empleado.cargo, hijos);
+                adicion = Adicional( empleado.basico, antiguedad,  empleado.cargo, hijos);
                 salario =  empleado.basico + adicion;
                 return salario;
             }
 
-            public float adicional(float basico, int antiguedad, string cargo, int canthijos)
+            public float Adicional(float basico, int antiguedad, string cargo, int canthijos)
             {
                 float adicion;
          
@@ -162,11 +138,11 @@ namespace tp7
                 }
                 if (cargo == "Ingeniero" || cargo == "Especialista")
                 {
-                    adicion = adicion * 1.5F;
+                    adicion *=  1.5F;
                 }
                 if (canthijos > 2)
                 {
-                    adicion = adicion + 5000;
+                adicion += 5000;
                 }
 
 
@@ -194,7 +170,7 @@ namespace tp7
         {
             Empleado nuevo;
             nuevo = new Empleado();
-            llenar(nuevo, id);
+            Llenar(nuevo, id);
             
             nuevo.sig = null;
             if (Vacia())
@@ -211,7 +187,7 @@ namespace tp7
         public Empleado Extraer(int id)
         {
             Empleado empleado = inicio;
-            Empleado ultimo = final;
+            
             if (final.id >= id && empleado.id <= id)
             {
                 while (empleado.id != id)
@@ -231,7 +207,6 @@ namespace tp7
         public void Imprimiruno(Empleado empleado)
         {
             int añosjubilacion;
-            DateTime hoy = DateTime.Today;
             int edad = DateTime.Today.AddTicks(-empleado.fechadenac.Ticks).Year - 1;
             Console.WriteLine("ID: " + empleado.id);
             Console.WriteLine("Nombre: " + empleado.nombre);
@@ -243,7 +218,7 @@ namespace tp7
             Console.WriteLine("Sueldo Basico: " + empleado.basico);
             Console.WriteLine("Cargo: " + empleado.cargo);
             Console.WriteLine("Edad: {0} años", edad);
-            Console.WriteLine("Salario: " + salario(empleado));
+            Console.WriteLine("Salario: " + Salario(empleado));
             Console.Write("Años Para Jubilarse: ");
             if (empleado.genero == "Masculino")
             {
@@ -262,7 +237,6 @@ namespace tp7
             Empleado reco = inicio;
             int  edad,contador = 0, añosjubilacion;
             float salariototal = 0;
-            DateTime hoy = DateTime.Today;
             while (reco != null)
             {
                 edad = DateTime.Today.AddTicks(-reco.fechadenac.Ticks).Year - 1;
@@ -276,7 +250,7 @@ namespace tp7
                 Console.WriteLine("Sueldo Basico: " + reco.basico);
                 Console.WriteLine("Cargo: " + reco.cargo);
                 Console.WriteLine("Edad: {0} años", edad);
-                Console.WriteLine("Salario: " + salario(reco));
+                Console.WriteLine("Salario: " + Salario(reco));
                 Console.Write("Años Para Jubilarse: ");
                 if (reco.genero == "Masculino")
                 {
@@ -290,7 +264,7 @@ namespace tp7
                 }
                 Console.Write(añosjubilacion);
 
-                salariototal += salario(reco);
+                salariototal += Salario(reco);
                 contador++;
                 Console.WriteLine("\n");
 
@@ -300,7 +274,7 @@ namespace tp7
             Console.WriteLine("\nSalario Total: " + salariototal + "; En un total de " + contador + " empleados");
 
         }
-        public DateTime fecha(int año)
+        public DateTime Fecha(int año)
         {
             int mes,dia;
             Random numrdm = new Random();
@@ -333,42 +307,83 @@ namespace tp7
 
             if (fecha1 >= DateTime.Today)
             {
-                fecha(año - 1);
+                Fecha(año - 1);
             }
                 return fecha1;
 
 
         }
 
-        public Empleado[] arre(Empleado emp)
+        public Empleado[] Arre(Empleado emp)
         {
-            Empleado[] arre=new Empleado[90];
+            Empleado[] arre=new Empleado[1];
             arre[0]= emp;
             return arre;
         }
-        public void guardar(string ruta, int cant, FileStream fs)
-        {   
-            
-            Empleado[] datos = new Empleado[6];
+        public void Guardar(int cant, FileStream fs)
+        {
+
+            Empleado[] datos;
             StreamWriter sw = new StreamWriter(fs);
             for (int i = 1; i <= 5; i++)
             {
                 cant++;
                 Insertar(cant);
                 fs.Seek(0, SeekOrigin.End);
-                datos = arre(Extraer(cant));
+                datos = Arre(Extraer(cant));
                 sw.WriteLine("Nombre: " + datos[0].nombre);
                 sw.WriteLine("Apellido: " + datos[0].apellido);
-                sw.WriteLine("Fecha de nac: " + datos[0].fechadenac);
+                sw.WriteLine("Fecha de nac: " + datos[0].fechadenac.ToString("dd/MM/YYYY"));
                 sw.WriteLine("Estado Civil: " + datos[0].estadocivil);
-                sw.WriteLine("Fecha de ing: " + datos[0].fechaing);
+                sw.WriteLine("Fecha de ing: " + datos[0].fechaing.ToString("dd/MM/YYYY"));
                 sw.WriteLine("Genero: " + datos[0].genero);
-                sw.WriteLine("Salario: " + datos[0].salario(datos[0]) + " \n ");
+                sw.WriteLine("Salario: " + datos[0].Salario(datos[0]) + " \n ");
 
             }
             sw.Close();
             fs.Close();
 
+        }
+        public string Elegirdisco()
+        {
+            int disco;
+            string[] drives = Directory.GetLogicalDrives();
+            Console.WriteLine("Elija la unidad donde desea realizar la copia de seguridad");
+            int cont = 0;
+            foreach (string drive in drives)
+            {
+                Console.Write(cont + ": ");
+                Console.WriteLine(drive);
+                cont++;
+            }
+
+            disco = int.Parse(Console.ReadLine());
+            Console.WriteLine("Usted eligio la direccion " + drives[disco]);
+            return drives[disco];
+
+        }
+        public string Crearcarpeta(string ruta)
+        {
+            if (!Directory.Exists(ruta))
+            {
+                Directory.CreateDirectory(ruta);
+
+            }
+            return ruta;
+
+        }
+        public void Mover(FileStream st,string destino)
+        {
+            destino = Path.ChangeExtension(destino, ".bk");
+            File.Copy(st.Name , destino , false);
+
+            FileStream fin = new FileStream(destino,FileMode.Open);
+            if (File.Exists(destino))
+            {
+                Console.WriteLine("Backup exitoso en :'{0}'",destino);
+            }
+            fin.Close();
+            
         }
 
     }
