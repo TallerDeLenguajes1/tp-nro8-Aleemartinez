@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace tp7
+namespace tp8
 {
     class Program
     {
